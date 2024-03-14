@@ -103,7 +103,7 @@ public class Main {
         salvaProdottiSuDisco(productList);
 
 //        ESERCIZIO 7
-
+        leggiProdottiDaDisco().forEach(System.out::println);
     }
 
     public static void salvaProdottiSuDisco(List<Product> list) {
@@ -112,9 +112,26 @@ public class Main {
 
         File file = new File("src/Esercizio6.txt");
         try {
-            FileUtils.writeStringToFile(file, productString);
+            FileUtils.writeStringToFile(file, productString, "UTF-8");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static List<Product> leggiProdottiDaDisco() {
+        List<Product> productsFromFile = new ArrayList<>();
+        File file = new File("src/Esercizio6.txt");
+        String stringFromFile = null;
+        try {
+            stringFromFile = FileUtils.readFileToString(file, "UTF-8");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        String[] firstArray = stringFromFile.split("#");
+        for (int i = 0; i < firstArray.length; i++) {
+            String[] secondArray = firstArray[i].split("@");
+            productsFromFile.add(new Product(1000, secondArray[0], secondArray[1], Double.parseDouble(secondArray[2])));
+        }
+        return productsFromFile;
     }
 }
