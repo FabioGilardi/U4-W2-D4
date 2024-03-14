@@ -100,7 +100,14 @@ public class Main {
         totalByCategory.forEach((s, aDouble) -> System.out.println("The category " + s + " has a total cost of " + aDouble));
 
 //        ESERCIZIO 6
-        String productString = productList.stream().map(product -> product.getName() + "@" + product.getCategory() + "@" + product.getPrice()).collect(Collectors.joining("#"));
+        salvaProdottiSuDisco(productList);
+
+//        ESERCIZIO 7
+
+    }
+
+    public static void salvaProdottiSuDisco(List<Product> list) {
+        String productString = list.stream().map(product -> product.getName() + "@" + product.getCategory() + "@" + product.getPrice()).collect(Collectors.joining("#"));
         System.out.println(productString);
 
         File file = new File("src/Esercizio6.txt");
