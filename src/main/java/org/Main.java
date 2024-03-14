@@ -1,7 +1,10 @@
 package org;
 
 import com.github.javafaker.Faker;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Supplier;
@@ -13,14 +16,13 @@ public class Main {
 //      FAKER
         Faker faker = new Faker();
 
-
 //        SUPPLIERS
         Supplier<Product> productSupplier = () -> {
             Random rndm = new Random();
             long randomId = rndm.nextLong(10000, 100000);
             double randomPrice = rndm.nextDouble(1.00, 500.00);
             int randomSelectorCategory = rndm.nextInt(0, 4);
-            String randomName = faker.leagueOfLegends().summonerSpell();
+            String randomName = faker.leagueOfLegends().rank();
             List<String> categoryList = new ArrayList<>();
             categoryList.add("Baby");
             categoryList.add("Books");
@@ -93,8 +95,19 @@ public class Main {
         System.out.println("The average price of each order is: " + averageOrdersPrice);
 
 //        ESERCIZIO 5
-        Map<String, Double> totalByCategory = productList.stream().collect(Collectors.groupingBy(product -> product.getCategory(), Collectors.summingDouble(product -> product.getPrice())));
+        Map<String, Double> totalByCategory = productList.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
 
         totalByCategory.forEach((s, aDouble) -> System.out.println("The category " + s + " has a total cost of " + aDouble));
+
+//        ESERCIZIO 6
+        String productString = productList.stream().map(product -> product.getName() + "@" + product.getCategory() + "@" + product.getPrice()).collect(Collectors.joining("#"));
+        System.out.println(productString);
+
+        File file = new File("src/Esercizio6.txt");
+        try {
+            FileUtils.writeStringToFile(file, productString);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
